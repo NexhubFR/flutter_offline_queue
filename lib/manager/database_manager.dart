@@ -9,6 +9,8 @@ import 'package:sembast/sembast_io.dart';
 class FOQDatabaseManager {
   static Database? db;
 
+  final _store = intMapStoreFactory.store();
+
   Future<void> init() async {
     final dir = await getApplicationDocumentsDirectory();
     await dir.create(recursive: true);
@@ -17,29 +19,30 @@ class FOQDatabaseManager {
   }
 
   void saveTasksIntoDatabase(List<FOQTask> tasks,
-      {required Function(String? response) didSuccess,
-      required Function(Object? error, StackTrace stackTrace) didFail}) async {
-    final store = intMapStoreFactory.store();
-    for (int i = 0; i < tasks.length; i++) {
-      final task = tasks[i];
-
-      await store
+      {required Function(Object? error, StackTrace stackTrace) didFail}) async {
+    for (var task in tasks) {
+      await _store
           .add(FOQDatabaseManager.db!, {
-            "uri": task.uri.toString(),
-            "method": task.method.name,
-            "headers": jsonEncode(task.headers),
-            "body": jsonEncode(task.body),
+            'uuid': task.uuid,
+            'uri': task.uri.toString(),
+            'method': task.method.name,
+            'headers': jsonEncode(task.headers),
+            'body': jsonEncode(task.body),
           })
-          .then((_) => didSuccess("Tasks saved into the database"))
+          .then((_) => print('Task saved into the database.'))
           .onError((error, stackTrace) => didFail(error, stackTrace));
     }
   }
 
   Future<List<FOQTask>> getTasks() async {
-    final store = intMapStoreFactory.store();
-    final records = await store.find(FOQDatabaseManager.db!);
+    final records = await _store.find(FOQDatabaseManager.db!);
     final tasks =
         records.map((record) => FOQTask.fromDatabase(record.value)).toList();
     return tasks;
+  }
+
+  Future<void> erase(String uuid) async {
+    await _store.delete(db!,
+        finder: Finder(filter: Filter.equals('uuid', uuid)));
   }
 }
