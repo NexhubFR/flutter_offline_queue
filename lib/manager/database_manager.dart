@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter_offline_queue/model/task.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,7 +30,7 @@ class FOQDatabaseManager {
             'headers': jsonEncode(task.headers),
             'body': jsonEncode(task.body),
           })
-          .then((_) => print('Task saved into the database.'))
+          .then((_) => log('Task saved into the database.'))
           .onError((error, stackTrace) => didFail(error, stackTrace));
     }
   }

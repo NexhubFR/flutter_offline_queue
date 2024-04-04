@@ -1,5 +1,7 @@
 library flutter_offline_queue;
 
+import 'dart:developer';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_offline_queue/manager/database_manager.dart';
 import 'package:flutter_offline_queue/core/task_processor.dart';
@@ -19,10 +21,10 @@ class FOQNetworkManager {
           if (tasks.isNotEmpty) {
             await FOQTaskProcessor().execute(tasks,
                 didFinish: (taskUuid) async =>
-                    {await databaseManager.erase(taskUuid)},
+                    await databaseManager.erase(taskUuid),
                 didSuccess: (taskUuid, response) =>
-                    {print('Task success: $response, $taskUuid')},
-                didFail: (error, stackTrace) => {print('$error, $stackTrace')});
+                    log('Task success: $response, $taskUuid'),
+                didFail: (error, stackTrace) => log('$error, $stackTrace'));
           }
         });
       }

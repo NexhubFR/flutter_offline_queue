@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_offline_queue/core/task_processor.dart';
 import 'package:flutter_offline_queue/foq.dart';
@@ -57,7 +59,7 @@ class Home extends StatelessWidget {
 
     processor.execute([task],
         didFinish: null,
-        didSuccess: (id, response) => {print('$id, $response')},
-        didFail: (error, stackTrace) => {print(error), print(stackTrace)});
+        didSuccess: (id, response) => log('$id, $response'),
+        didFail: (error, stackTrace) => log('$error, $stackTrace'));
   }
 }
