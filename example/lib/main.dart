@@ -56,6 +56,7 @@ class Home extends StatelessWidget {
     final task = FOQTask(url, HTTPMethod.post, headers, body);
 
     processor.execute([task],
+        didFinish: null,
         didSuccess: (id, response) => {print('$id, $response')},
         didFail: (error, stackTrace) => {print(error), print(stackTrace)});
   }

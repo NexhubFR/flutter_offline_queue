@@ -18,10 +18,10 @@ class FOQNetworkManager {
 
           if (tasks.isNotEmpty) {
             await FOQTaskProcessor().execute(tasks,
-                didSuccess: (taskUuid, response) async => {
-                      print('Task success: $response, $taskUuid'),
-                      await databaseManager.erase(taskUuid),
-                    },
+                didFinish: (taskUuid) async =>
+                    {await databaseManager.erase(taskUuid)},
+                didSuccess: (taskUuid, response) =>
+                    {print('Task success: $response, $taskUuid')},
                 didFail: (error, stackTrace) => {print('$error, $stackTrace')});
           }
         });

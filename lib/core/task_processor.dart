@@ -13,7 +13,8 @@ class FOQTaskProcessor {
   final databaseManager = FOQDatabaseManager();
 
   Future<void> execute(List<FOQTask> tasks,
-      {required Function(String taskUuid, String response) didSuccess,
+      {required Function(String taskUuid)? didFinish,
+      required Function(String taskUuid, String response) didSuccess,
       required Function(Object? error, StackTrace stackTrace) didFail}) async {
     final List<ConnectivityResult> connectivityResult =
         await (Connectivity().checkConnectivity());
@@ -22,12 +23,13 @@ class FOQTaskProcessor {
       databaseManager.saveTasksIntoDatabase(tasks, didFail: didFail);
     } else {
       await _executeHTTPRequests(tasks,
-          didSuccess: didSuccess, didFail: didFail);
+          didFinish: didFinish, didSuccess: didSuccess, didFail: didFail);
     }
   }
 
   Future<void> _executeHTTPRequests(List<FOQTask> tasks,
-      {required Function(String taskUuid, String response) didSuccess,
+      {required Function(String taskUuid)? didFinish,
+      required Function(String taskUuid, String response) didSuccess,
       required Function(Object? error, StackTrace stackTrace) didFail}) async {
     for (var task in tasks) {
       switch (task.method) {
@@ -48,6 +50,10 @@ class FOQTaskProcessor {
               .put(task.uri, headers: task.headers, body: jsonEncode(task.body))
               .then((value) => didSuccess(task.uuid, value.body))
               .onError((error, stackTrace) => didFail(error, stackTrace));
+      }
+
+      if (didFinish != null) {
+        didFinish(task.uuid);
       }
     }
   }
