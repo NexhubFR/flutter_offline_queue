@@ -2,15 +2,16 @@ library flutter_offline_queue;
 
 import 'dart:convert';
 
-import 'task.dart';
+import '../model/task.dart';
 
-import 'package:flutter_offline_queue/database_manager.dart';
-import 'package:sembast/sembast.dart';
-import 'package:flutter_offline_queue/http_method.dart';
+import 'package:flutter_offline_queue/manager/database_manager.dart';
+import 'package:flutter_offline_queue/enum/http_method.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:http/http.dart' as http;
 
 class FOQTaskSequencer {
+  final databaseManager = FOQDatabaseManager();
+
   void execute(List<FOQTask> tasks,
       {required Function(String? response) didSuccess,
       required Function(Object? error, StackTrace stackTrace) didFail}) async {
@@ -18,28 +19,11 @@ class FOQTaskSequencer {
         await (Connectivity().checkConnectivity());
 
     if (connectivityResult.contains(ConnectivityResult.none)) {
-      _saveTasksIntoDatabase(tasks, didSuccess: didSuccess, didFail: didFail);
+      databaseManager.saveTasksIntoDatabase(tasks,
+          didSuccess: didSuccess, didFail: didFail);
     } else {
       await _executeHTTPRequests(tasks,
           didSuccess: didSuccess, didFail: didFail);
-    }
-  }
-
-  void _saveTasksIntoDatabase(List<FOQTask> tasks,
-      {required Function(String? response) didSuccess,
-      required Function(Object? error, StackTrace stackTrace) didFail}) async {
-    var store = intMapStoreFactory.store();
-    for (int i = 0; i < tasks.length; i++) {
-      var task = tasks[i];
-      await store
-          .add(FOQDatabaseManager.db!, {
-            "uri": task.uri.toString(),
-            "method": task.method.toString(),
-            "headers": task.headers,
-            "body": task.body
-          })
-          .then((_) => didSuccess("Tasks saved into the database"))
-          .onError((error, stackTrace) => didFail(error, stackTrace));
     }
   }
 
@@ -47,7 +31,7 @@ class FOQTaskSequencer {
       {required Function(String response) didSuccess,
       required Function(Object? error, StackTrace stackTrace) didFail}) async {
     for (int i = 0; i < tasks.length; i++) {
-      var task = tasks[i];
+      final task = tasks[i];
 
       switch (task.method) {
         case HTTPMethod.post:

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_offline_queue/database_manager.dart';
-import 'package:flutter_offline_queue/http_method.dart';
-import 'package:flutter_offline_queue/task.dart';
-import 'package:flutter_offline_queue/task_sequencer.dart';
+import 'package:flutter_offline_queue/foq.dart';
+import 'package:flutter_offline_queue/enum/http_method.dart';
+import 'package:flutter_offline_queue/model/task.dart';
+import 'package:flutter_offline_queue/core/task_sequencer.dart';
 
 void main() {
   runApp(const App());
-  FOQDatabaseManager().init();
+  FOQ().init();
 }
 
 class App extends StatelessWidget {
@@ -48,12 +48,12 @@ class Home extends StatelessWidget {
   }
 
   void post() {
-    var sequencer = FOQTaskSequencer();
+    final sequencer = FOQTaskSequencer();
 
-    var url = Uri.https("dummyjson.com", "/products/add");
-    var headers = {'Content-Type': 'application/json'};
-    var body = {"title": 'BMW Pencil'};
-    var task = FOQTask(url, HTTPMethod.post, headers, body);
+    final url = Uri.https("dummyjson.com", "/products/add");
+    final headers = {'Content-Type': 'application/json'};
+    final body = {"title": 'BMW Pencil'};
+    final task = FOQTask(url, HTTPMethod.post, headers, body);
 
     sequencer.execute([task],
         didSuccess: (response) => {print(response)},
