@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_offline_queue/core/task_handler.dart';
 import 'package:flutter_offline_queue/core/task_processor.dart';
 import 'package:flutter_offline_queue/foq.dart';
 import 'package:flutter_offline_queue/enum/http_method.dart';
@@ -8,10 +9,10 @@ import 'package:flutter_offline_queue/model/task.dart';
 
 void main() {
   runApp(const App());
-  FOQ().init(TaskDelegate());
+  FOQ().init(ExampleTaskHandler());
 }
 
-class TaskDelegate extends FOQTaskDelegate {
+class ExampleTaskHandler extends FOQTaskHandler {
   @override
   void didFail(FOQTask task, Object? error, StackTrace stackTrace) {
     log('didFail: $task, $error, $stackTrace');
@@ -76,6 +77,6 @@ class Home extends StatelessWidget {
     final body = {'title': 'BMW Pencil'};
     final task = FOQTask(url, type, HTTPMethod.post, headers, body);
 
-    processor.executeOneTask(task, TaskDelegate());
+    processor.executeOneTask(task, ExampleTaskHandler());
   }
 }

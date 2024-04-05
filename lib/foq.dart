@@ -1,10 +1,10 @@
+import 'package:flutter_offline_queue/core/task_handler.dart';
 import 'package:flutter_offline_queue/manager/database_manager.dart';
 import 'package:flutter_offline_queue/manager/network_manager.dart';
-import 'package:flutter_offline_queue/model/task.dart';
 
 class FOQ {
-  void init(FOQTaskDelegate taskDelegate) async {
+  void init(FOQTaskHandler handler) async {
     await FOQDatabaseManager().init();
-    await FOQNetworkManager(taskDelegate).observe();
+    await FOQNetworkManager(handler).observe();
   }
 }

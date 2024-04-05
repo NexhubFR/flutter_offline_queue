@@ -8,7 +8,7 @@ import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 
 class FOQDatabaseManager {
-  static Database? db;
+  Database? _database;
 
   final _store = intMapStoreFactory.store();
 
@@ -16,7 +16,7 @@ class FOQDatabaseManager {
     final dir = await getApplicationDocumentsDirectory();
     await dir.create(recursive: true);
     final dbPath = join(dir.path, 'foq.db');
-    db = await databaseFactoryIo.openDatabase(dbPath);
+    _database = await databaseFactoryIo.openDatabase(dbPath);
   }
 
   void saveTasksIntoDatabase(List<FOQTask> tasks,
@@ -24,7 +24,7 @@ class FOQDatabaseManager {
           didFail}) async {
     for (var task in tasks) {
       await _store
-          .add(FOQDatabaseManager.db!, {
+          .add(_database!, {
             'uuid': task.uuid,
             'uri': task.uri.toString(),
             'type': task.type,
@@ -38,14 +38,14 @@ class FOQDatabaseManager {
   }
 
   Future<List<FOQTask>> getTasks() async {
-    final records = await _store.find(FOQDatabaseManager.db!);
+    final records = await _store.find(_database!);
     final tasks =
         records.map((record) => FOQTask.fromDatabase(record.value)).toList();
     return tasks;
   }
 
   Future<void> erase(String uuid) async {
-    await _store.delete(db!,
+    await _store.delete(_database!,
         finder: Finder(filter: Filter.equals('uuid', uuid)));
   }
 }

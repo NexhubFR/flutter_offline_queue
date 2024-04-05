@@ -3,29 +3,7 @@ library flutter_offline_queue;
 import 'dart:convert';
 
 import 'package:flutter_offline_queue/enum/http_method.dart';
-import 'package:flutter_offline_queue/manager/database_manager.dart';
 import 'package:uuid/uuid.dart';
-
-abstract class _DefaultFOQTaskDelegate {
-  Future<void> didFinish(FOQTask task);
-  void didSuccess(FOQTask task, String response);
-  void didFail(FOQTask task, Object? error, StackTrace stackTrace);
-}
-
-class FOQTaskDelegate extends _DefaultFOQTaskDelegate {
-  final _databaseManager = FOQDatabaseManager();
-
-  @override
-  void didFail(FOQTask task, Object? error, StackTrace stackTrace) {}
-
-  @override
-  Future<void> didFinish(FOQTask task) async {
-    await _databaseManager.erase(task.uuid);
-  }
-
-  @override
-  void didSuccess(FOQTask task, String response) {}
-}
 
 class FOQTask {
   String uuid = const Uuid().v8();
