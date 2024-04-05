@@ -12,7 +12,12 @@ import 'package:http/http.dart' as http;
 class FOQTaskProcessor {
   final databaseManager = FOQDatabaseManager();
 
-  Future<void> execute(
+  Future<void> executeOneTask(
+      FOQTask task, FOQTaskDelegate taskDelegate) async {
+    executeMultipleTasks([task], taskDelegate);
+  }
+
+  Future<void> executeMultipleTasks(
       List<FOQTask> tasks, FOQTaskDelegate taskDelegate) async {
     final List<ConnectivityResult> connectivityResult =
         await (Connectivity().checkConnectivity());

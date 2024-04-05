@@ -22,7 +22,7 @@ class FOQNetworkManager {
           final tasks = await databaseManager.getTasks();
 
           if (tasks.isNotEmpty) {
-            await FOQTaskProcessor().execute(tasks, taskDelegate!);
+            await FOQTaskProcessor().executeMultipleTasks(tasks, taskDelegate!);
           }
         });
       }

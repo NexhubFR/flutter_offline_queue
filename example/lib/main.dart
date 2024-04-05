@@ -76,6 +76,6 @@ class Home extends StatelessWidget {
     final body = {'title': 'BMW Pencil'};
     final task = FOQTask(url, type, HTTPMethod.post, headers, body);
 
-    processor.execute([task], TaskDelegate());
+    processor.executeOneTask(task, TaskDelegate());
   }
 }
