@@ -8,7 +8,7 @@ import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 
 class FOQDatabaseManager {
-  Database? _database;
+  static Database? _database;
 
   final _store = intMapStoreFactory.store();
 
@@ -19,7 +19,7 @@ class FOQDatabaseManager {
     _database = await databaseFactoryIo.openDatabase(dbPath);
   }
 
-  void saveTasksIntoDatabase(List<FOQTask> tasks,
+  Future<void> saveTasksIntoDatabase(List<FOQTask> tasks,
       {required Function(FOQTask task, Object? error, StackTrace stackTrace)
           didFail}) async {
     for (var task in tasks) {
