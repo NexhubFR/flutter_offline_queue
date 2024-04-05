@@ -8,7 +8,25 @@ import 'package:flutter_offline_queue/model/task.dart';
 
 void main() {
   runApp(const App());
-  FOQ().init();
+  FOQ().init(TaskDelegate());
+}
+
+class TaskDelegate extends FOQTaskDelegate {
+  @override
+  void didFail(FOQTask task, Object? error, StackTrace stackTrace) {
+    log('didFail: $task, $error, $stackTrace');
+  }
+
+  @override
+  Future<void> didFinish(FOQTask task) async {
+    await super.didFinish(task);
+    log('didFinish: $task');
+  }
+
+  @override
+  void didSuccess(FOQTask task, String response) {
+    log('didSuccess: $task, $response');
+  }
 }
 
 class App extends StatelessWidget {
@@ -53,13 +71,11 @@ class Home extends StatelessWidget {
     final processor = FOQTaskProcessor();
 
     final url = Uri.https('dummyjson.com', '/products/add');
+    const type = "POSTProductTask";
     final headers = {'Content-Type': 'application/json'};
     final body = {'title': 'BMW Pencil'};
-    final task = FOQTask(url, HTTPMethod.post, headers, body);
+    final task = FOQTask(url, type, HTTPMethod.post, headers, body);
 
-    processor.execute([task],
-        didFinish: null,
-        didSuccess: (id, response) => log('$id, $response'),
-        didFail: (error, stackTrace) => log('$error, $stackTrace'));
+    processor.execute([task], TaskDelegate());
   }
 }

@@ -20,18 +20,20 @@ class FOQDatabaseManager {
   }
 
   void saveTasksIntoDatabase(List<FOQTask> tasks,
-      {required Function(Object? error, StackTrace stackTrace) didFail}) async {
+      {required Function(FOQTask task, Object? error, StackTrace stackTrace)
+          didFail}) async {
     for (var task in tasks) {
       await _store
           .add(FOQDatabaseManager.db!, {
             'uuid': task.uuid,
             'uri': task.uri.toString(),
+            'type': task.type,
             'method': task.method.name,
             'headers': jsonEncode(task.headers),
             'body': jsonEncode(task.body),
           })
           .then((_) => log('Task saved into the database.'))
-          .onError((error, stackTrace) => didFail(error, stackTrace));
+          .onError((error, stackTrace) => didFail(task, error, stackTrace));
     }
   }
 

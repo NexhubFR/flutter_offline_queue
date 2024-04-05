@@ -12,49 +12,46 @@ import 'package:http/http.dart' as http;
 class FOQTaskProcessor {
   final databaseManager = FOQDatabaseManager();
 
-  Future<void> execute(List<FOQTask> tasks,
-      {required Function(String taskUuid)? didFinish,
-      required Function(String taskUuid, String response) didSuccess,
-      required Function(Object? error, StackTrace stackTrace) didFail}) async {
+  Future<void> execute(
+      List<FOQTask> tasks, FOQTaskDelegate taskDelegate) async {
     final List<ConnectivityResult> connectivityResult =
         await (Connectivity().checkConnectivity());
 
     if (connectivityResult.contains(ConnectivityResult.none)) {
-      databaseManager.saveTasksIntoDatabase(tasks, didFail: didFail);
+      databaseManager.saveTasksIntoDatabase(tasks,
+          didFail: taskDelegate.didFail);
     } else {
-      await _executeHTTPRequests(tasks,
-          didFinish: didFinish, didSuccess: didSuccess, didFail: didFail);
+      await _executeHTTPRequests(tasks, taskDelegate);
     }
   }
 
-  Future<void> _executeHTTPRequests(List<FOQTask> tasks,
-      {required Function(String taskUuid)? didFinish,
-      required Function(String taskUuid, String response) didSuccess,
-      required Function(Object? error, StackTrace stackTrace) didFail}) async {
+  Future<void> _executeHTTPRequests(
+      List<FOQTask> tasks, FOQTaskDelegate taskDelegate) async {
     for (var task in tasks) {
       switch (task.method) {
         case HTTPMethod.post:
           await http
               .post(task.uri,
                   headers: task.headers, body: jsonEncode(task.body))
-              .then((value) => didSuccess(task.uuid, value.body))
-              .onError((error, stackTrace) => didFail(error, stackTrace));
+              .then((value) => taskDelegate.didSuccess(task, value.body))
+              .onError((error, stackTrace) =>
+                  taskDelegate.didFail(task, error, stackTrace));
         case HTTPMethod.patch:
           await http
               .patch(task.uri,
                   headers: task.headers, body: jsonEncode(task.body))
-              .then((value) => didSuccess(task.uuid, value.body))
-              .onError((error, stackTrace) => didFail(error, stackTrace));
+              .then((value) => taskDelegate.didSuccess(task, value.body))
+              .onError((error, stackTrace) =>
+                  taskDelegate.didFail(task, error, stackTrace));
         case HTTPMethod.put:
           await http
               .put(task.uri, headers: task.headers, body: jsonEncode(task.body))
-              .then((value) => didSuccess(task.uuid, value.body))
-              .onError((error, stackTrace) => didFail(error, stackTrace));
+              .then((value) => taskDelegate.didSuccess(task, value.body))
+              .onError((error, stackTrace) =>
+                  taskDelegate.didFail(task, error, stackTrace));
       }
 
-      if (didFinish != null) {
-        didFinish(task.uuid);
-      }
+      await taskDelegate.didFinish(task);
     }
   }
 }
