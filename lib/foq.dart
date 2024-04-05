@@ -3,7 +3,7 @@ import 'package:flutter_offline_queue/manager/database_manager.dart';
 import 'package:flutter_offline_queue/manager/network_manager.dart';
 
 class FOQ {
-  void init(FOQTaskHandler handler) async {
+  Future<void> init(FOQTaskHandler handler) async {
     await FOQDatabaseManager().init();
     await FOQNetworkManager(handler).observe();
   }
