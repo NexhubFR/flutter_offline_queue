@@ -9,7 +9,7 @@ import 'package:synchronized/synchronized.dart';
 class FOQNetworkManager {
   final FOQDatabaseManager databaseManager = FOQDatabaseManager();
 
-  FOQTaskHandler? handler;
+  late FOQTaskHandler handler;
 
   FOQNetworkManager(this.handler);
 
@@ -22,7 +22,7 @@ class FOQNetworkManager {
           final tasks = await databaseManager.getTasks();
 
           if (tasks.isNotEmpty) {
-            await FOQTaskProcessor().executeMultipleTasks(tasks, handler!);
+            await FOQTaskProcessor().executeMultipleTasks(tasks, handler);
           }
         });
       }
