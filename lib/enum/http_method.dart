@@ -12,6 +12,7 @@ extension HTTPMethodExtension on HTTPMethod {
       case 'put':
         return HTTPMethod.put;
       default:
+        Exception("HTTP method not recognized.");
         return null;
     }
   }
