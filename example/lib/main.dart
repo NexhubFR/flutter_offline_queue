@@ -12,6 +12,10 @@ void main() {
   FOQ().init(ExampleTaskHandler());
 }
 
+class ExampleTask extends FOQTask {
+  ExampleTask(super.uri, super.method, super.headers, super.body);
+}
+
 class ExampleTaskHandler extends FOQTaskHandler {
   @override
   void didFail(FOQTask task, Object? error, StackTrace stackTrace) {
@@ -28,6 +32,17 @@ class ExampleTaskHandler extends FOQTaskHandler {
   void didSuccess(FOQTask task, String response) {
     log('didSuccess: $task, $response');
   }
+}
+
+void post() {
+  final processor = FOQTaskProcessor();
+
+  final url = Uri.https('dummyjson.com', '/products/add');
+  final headers = {'Content-Type': 'application/json'};
+  final body = {'title': 'BMW Pencil'};
+  final task = ExampleTask(url, HTTPMethod.post, headers, body);
+
+  processor.executeOneTask(task, ExampleTaskHandler());
 }
 
 class App extends StatelessWidget {
@@ -66,17 +81,5 @@ class Home extends StatelessWidget {
             )),
           ]),
     );
-  }
-
-  void post() {
-    final processor = FOQTaskProcessor();
-
-    final url = Uri.https('dummyjson.com', '/products/add');
-    const type = "POSTProductTask";
-    final headers = {'Content-Type': 'application/json'};
-    final body = {'title': 'BMW Pencil'};
-    final task = FOQTask(url, type, HTTPMethod.post, headers, body);
-
-    processor.executeOneTask(task, ExampleTaskHandler());
   }
 }

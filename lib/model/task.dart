@@ -6,15 +6,18 @@ import 'package:flutter_offline_queue/enum/http_method.dart';
 import 'package:uuid/uuid.dart';
 
 class FOQTask {
-  String uuid = const Uuid().v8();
+  late String uuid;
+  late String type;
 
   Uri uri;
-  String type;
   HTTPMethod method;
   Map<String, String> headers;
   Map<String, String> body;
 
-  FOQTask(this.uri, this.type, this.method, this.headers, this.body);
+  FOQTask(this.uri, this.method, this.headers, this.body) {
+    uuid = const Uuid().v8();
+    type = runtimeType.toString();
+  }
 
   static FOQTask fromDatabase(Map<String, Object?> data) {
     final values = data.values.toList();
@@ -32,8 +35,9 @@ class FOQTask {
     Map<String, String> body =
         decodedBody.map((key, value) => MapEntry(key, value.toString()));
 
-    final task = FOQTask(uri, type, method, headers, body);
+    final task = FOQTask(uri, method, headers, body);
     task.uuid = uuid;
+    task.type = type;
     return task;
   }
 }
