@@ -22,7 +22,8 @@ class FOQTaskProcessor {
         await (Connectivity().checkConnectivity());
 
     if (connectivityResult.contains(ConnectivityResult.none)) {
-      databaseManager.saveTasksIntoDatabase(tasks, didFail: handler.didFail);
+      await databaseManager.saveTasksIntoDatabase(tasks,
+          didFail: handler.didFail);
     } else {
       await _executeHTTPRequests(tasks, handler);
     }
