@@ -11,13 +11,15 @@ class CRUDScreen extends StatelessWidget {
 
   void post() {
     final processor = OTTaskProcessor();
+    final handler = ExampleTaskHandler();
 
-    final url = Uri.https('dummyjson.com', '/products/add');
-    final headers = {'Content-Type': 'application/json'};
-    final body = {'title': 'BMW Pencil'};
-    final task = ExampleTask(url, HTTPMethod.post, headers, body);
+    final task = ExampleTask(
+        Uri.https('dummyjson.com', '/products/add'),
+        HTTPMethod.post,
+        {'Content-Type': 'application/json'},
+        {'title': 'BMW Pencil'});
 
-    processor.executeOneTask(task, ExampleTaskHandler(), true);
+    processor.executeOneTask(task, handler, true);
   }
 
   @override
