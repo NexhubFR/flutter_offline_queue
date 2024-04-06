@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_offline_queue:
+  otter:
     path: ../
 
 

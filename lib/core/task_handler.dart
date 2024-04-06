@@ -1,25 +1,25 @@
-library flutter_offline_queue;
+library otter;
 
-import 'package:flutter_offline_queue/manager/database_manager.dart';
-import 'package:flutter_offline_queue/model/task.dart';
+import 'package:otter/manager/database_manager.dart';
+import 'package:otter/model/task.dart';
 
-abstract class _DefaultFOQTaskHandler {
-  Future<void> didFinish(FOQTask task);
-  void didSuccess(FOQTask task, String response);
-  void didFail(FOQTask task, Object? error, StackTrace stackTrace);
+abstract class _DefaultOTTaskHandler {
+  Future<void> didFinish(OTTask task);
+  void didSuccess(OTTask task, String response);
+  void didFail(OTTask task, Object? error, StackTrace stackTrace);
 }
 
-class FOQTaskHandler extends _DefaultFOQTaskHandler {
-  final _databaseManager = FOQDatabaseManager();
+class OTTaskHandler extends _DefaultOTTaskHandler {
+  final _databaseManager = OTDatabaseManager();
 
   @override
-  void didFail(FOQTask task, Object? error, StackTrace stackTrace) {}
+  void didFail(OTTask task, Object? error, StackTrace stackTrace) {}
 
   @override
-  Future<void> didFinish(FOQTask task) async {
+  Future<void> didFinish(OTTask task) async {
     await _databaseManager.erase(task.uuid);
   }
 
   @override
-  void didSuccess(FOQTask task, String response) {}
+  void didSuccess(OTTask task, String response) {}
 }

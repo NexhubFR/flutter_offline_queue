@@ -1,5 +1,5 @@
-name: flutter_offline_queue
-description: "A new Flutter package project."
+name: otter
+description: "Flutter plugin designed to simplify the management of HTTP requests in offline and online modes."
 version: 0.0.1
 homepage:
 

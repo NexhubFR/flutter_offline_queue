@@ -1,41 +1,41 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_offline_queue/core/task_handler.dart';
-import 'package:flutter_offline_queue/core/task_processor.dart';
-import 'package:flutter_offline_queue/foq.dart';
-import 'package:flutter_offline_queue/enum/http_method.dart';
-import 'package:flutter_offline_queue/model/task.dart';
+import 'package:otter/core/task_handler.dart';
+import 'package:otter/core/task_processor.dart';
+import 'package:otter/otter.dart';
+import 'package:otter/enum/http_method.dart';
+import 'package:otter/model/task.dart';
 
 void main() {
   runApp(const App());
-  FOQ().init(ExampleTaskHandler());
+  Otter.init(ExampleTaskHandler());
 }
 
-class ExampleTask extends FOQTask {
+class ExampleTask extends OTTask {
   ExampleTask(super.uri, super.method, super.headers, super.body);
 }
 
-class ExampleTaskHandler extends FOQTaskHandler {
+class ExampleTaskHandler extends OTTaskHandler {
   @override
-  void didFail(FOQTask task, Object? error, StackTrace stackTrace) {
+  void didFail(OTTask task, Object? error, StackTrace stackTrace) {
     log('didFail: $task, $error, $stackTrace');
   }
 
   @override
-  Future<void> didFinish(FOQTask task) async {
+  Future<void> didFinish(OTTask task) async {
     await super.didFinish(task);
     log('didFinish: $task');
   }
 
   @override
-  void didSuccess(FOQTask task, String response) {
+  void didSuccess(OTTask task, String response) {
     log('didSuccess: $task, $response');
   }
 }
 
 void post() {
-  final processor = FOQTaskProcessor();
+  final processor = OTTaskProcessor();
 
   final url = Uri.https('dummyjson.com', '/products/add');
   final headers = {'Content-Type': 'application/json'};

@@ -1,11 +1,11 @@
-library flutter_offline_queue;
+library otter;
 
 import 'dart:convert';
 
-import 'package:flutter_offline_queue/enum/http_method.dart';
+import 'package:otter/enum/http_method.dart';
 import 'package:uuid/uuid.dart';
 
-class FOQTask {
+class OTTask {
   late String uuid;
   late String type;
 
@@ -14,12 +14,12 @@ class FOQTask {
   Map<String, String> headers;
   Map<String, String> body;
 
-  FOQTask(this.uri, this.method, this.headers, this.body) {
+  OTTask(this.uri, this.method, this.headers, this.body) {
     uuid = const Uuid().v8();
     type = runtimeType.toString();
   }
 
-  static FOQTask fromDatabase(Map<String, Object?> data) {
+  static OTTask fromDatabase(Map<String, Object?> data) {
     final values = data.values.toList();
 
     final uuid = values[0].toString();
@@ -35,7 +35,7 @@ class FOQTask {
     Map<String, String> body =
         decodedBody.map((key, value) => MapEntry(key, value.toString()));
 
-    final task = FOQTask(uri, method, headers, body);
+    final task = OTTask(uri, method, headers, body);
     task.uuid = uuid;
     task.type = type;
     return task;

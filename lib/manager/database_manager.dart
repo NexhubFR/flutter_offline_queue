@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:flutter_offline_queue/model/task.dart';
+import 'package:otter/model/task.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 
-class FOQDatabaseManager {
+class OTDatabaseManager {
   static late Database _database;
 
   final _store = intMapStoreFactory.store();
@@ -15,12 +15,12 @@ class FOQDatabaseManager {
   Future<void> init() async {
     final dir = await getApplicationDocumentsDirectory();
     await dir.create(recursive: true);
-    final dbPath = join(dir.path, 'foq.db');
+    final dbPath = join(dir.path, 'OT.db');
     _database = await databaseFactoryIo.openDatabase(dbPath);
   }
 
-  Future<void> saveTasksIntoDatabase(List<FOQTask> tasks,
-      {required Function(FOQTask task, Object? error, StackTrace stackTrace)
+  Future<void> saveTasksIntoDatabase(List<OTTask> tasks,
+      {required Function(OTTask task, Object? error, StackTrace stackTrace)
           didFail}) async {
     for (var task in tasks) {
       await _store
@@ -37,10 +37,10 @@ class FOQDatabaseManager {
     }
   }
 
-  Future<List<FOQTask>> getTasks() async {
+  Future<List<OTTask>> getTasks() async {
     final records = await _store.find(_database);
     final tasks =
-        records.map((record) => FOQTask.fromDatabase(record.value)).toList();
+        records.map((record) => OTTask.fromDatabase(record.value)).toList();
     return tasks;
   }
 

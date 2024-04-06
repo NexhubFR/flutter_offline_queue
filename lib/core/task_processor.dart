@@ -1,23 +1,23 @@
-library flutter_offline_queue;
+library otter;
 
 import 'dart:convert';
 
-import 'package:flutter_offline_queue/core/task_handler.dart';
-import 'package:flutter_offline_queue/model/task.dart';
-import 'package:flutter_offline_queue/manager/database_manager.dart';
-import 'package:flutter_offline_queue/enum/http_method.dart';
+import 'package:otter/core/task_handler.dart';
+import 'package:otter/model/task.dart';
+import 'package:otter/manager/database_manager.dart';
+import 'package:otter/enum/http_method.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:http/http.dart' as http;
 
-class FOQTaskProcessor {
-  final FOQDatabaseManager databaseManager = FOQDatabaseManager();
+class OTTaskProcessor {
+  final OTDatabaseManager databaseManager = OTDatabaseManager();
 
-  Future<void> executeOneTask(FOQTask task, FOQTaskHandler handler) async {
+  Future<void> executeOneTask(OTTask task, OTTaskHandler handler) async {
     executeMultipleTasks([task], handler);
   }
 
   Future<void> executeMultipleTasks(
-      List<FOQTask> tasks, FOQTaskHandler handler) async {
+      List<OTTask> tasks, OTTaskHandler handler) async {
     final List<ConnectivityResult> connectivityResult =
         await (Connectivity().checkConnectivity());
 
@@ -30,7 +30,7 @@ class FOQTaskProcessor {
   }
 
   Future<void> _executeHTTPRequests(
-      List<FOQTask> tasks, FOQTaskHandler handler) async {
+      List<OTTask> tasks, OTTaskHandler handler) async {
     for (var task in tasks) {
       switch (task.method) {
         case HTTPMethod.post:
@@ -45,7 +45,7 @@ class FOQTaskProcessor {
     }
   }
 
-  Future<void> _post(FOQTask task, FOQTaskHandler handler) async {
+  Future<void> _post(OTTask task, OTTaskHandler handler) async {
     await http
         .post(task.uri, headers: task.headers, body: jsonEncode(task.body))
         .then((value) => handler.didSuccess(task, value.body))
@@ -53,7 +53,7 @@ class FOQTaskProcessor {
             (error, stackTrace) => handler.didFail(task, error, stackTrace));
   }
 
-  Future<void> _patch(FOQTask task, FOQTaskHandler handler) async {
+  Future<void> _patch(OTTask task, OTTaskHandler handler) async {
     await http
         .patch(task.uri, headers: task.headers, body: jsonEncode(task.body))
         .then((value) => handler.didSuccess(task, value.body))
@@ -61,7 +61,7 @@ class FOQTaskProcessor {
             (error, stackTrace) => handler.didFail(task, error, stackTrace));
   }
 
-  Future<void> _put(FOQTask task, FOQTaskHandler handler) async {
+  Future<void> _put(OTTask task, OTTaskHandler handler) async {
     await http
         .put(task.uri, headers: task.headers, body: jsonEncode(task.body))
         .then((value) => handler.didSuccess(task, value.body))

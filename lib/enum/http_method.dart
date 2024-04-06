@@ -1,4 +1,4 @@
-library flutter_offline_queue;
+library otter;
 
 enum HTTPMethod { post, patch, put }
 

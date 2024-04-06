@@ -1,17 +1,17 @@
-library flutter_offline_queue;
+library otter;
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter_offline_queue/core/task_handler.dart';
-import 'package:flutter_offline_queue/manager/database_manager.dart';
-import 'package:flutter_offline_queue/core/task_processor.dart';
+import 'package:otter/core/task_handler.dart';
+import 'package:otter/manager/database_manager.dart';
+import 'package:otter/core/task_processor.dart';
 import 'package:synchronized/synchronized.dart';
 
-class FOQNetworkManager {
-  final FOQDatabaseManager databaseManager = FOQDatabaseManager();
+class OTNetworkManager {
+  final OTDatabaseManager databaseManager = OTDatabaseManager();
 
-  late FOQTaskHandler handler;
+  late OTTaskHandler handler;
 
-  FOQNetworkManager(this.handler);
+  OTNetworkManager(this.handler);
 
   Future<void> observe() async {
     var lock = Lock(reentrant: true);
@@ -22,7 +22,7 @@ class FOQNetworkManager {
           final tasks = await databaseManager.getTasks();
 
           if (tasks.isNotEmpty) {
-            await FOQTaskProcessor().executeMultipleTasks(tasks, handler);
+            await OTTaskProcessor().executeMultipleTasks(tasks, handler);
           }
         });
       }
