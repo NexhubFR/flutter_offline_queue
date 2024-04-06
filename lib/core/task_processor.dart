@@ -1,7 +1,6 @@
 library otter;
 
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:otter/core/task_handler.dart';
 import 'package:otter/model/task.dart';
