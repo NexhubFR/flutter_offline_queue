@@ -32,7 +32,15 @@ dependencies:
     sdk: flutter
   otter:
     path: ../
+  icons_launcher: ^2.1.7
 
+icons_launcher:
+  image_path: "../resources/icon.jpg"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
