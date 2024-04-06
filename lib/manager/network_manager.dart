@@ -22,7 +22,7 @@ class OTNetworkManager {
           final tasks = await databaseManager.getTasks();
 
           if (tasks.isNotEmpty) {
-            await OTTaskProcessor().executeMultipleTasks(tasks, handler);
+            await OTTaskProcessor().executeMultipleTasks(tasks, handler, false);
           }
         });
       }

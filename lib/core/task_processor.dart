@@ -1,6 +1,7 @@
 library otter;
 
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:otter/core/task_handler.dart';
 import 'package:otter/model/task.dart';
@@ -12,19 +13,20 @@ import 'package:http/http.dart' as http;
 class OTTaskProcessor {
   final OTDatabaseManager databaseManager = OTDatabaseManager();
 
-  Future<void> executeOneTask(OTTask task, OTTaskHandler handler) async {
-    executeMultipleTasks([task], handler);
+  Future<void> executeOneTask(
+      OTTask task, OTTaskHandler handler, bool offlineStorageEnabled) async {
+    executeMultipleTasks([task], handler, offlineStorageEnabled);
   }
 
-  Future<void> executeMultipleTasks(
-      List<OTTask> tasks, OTTaskHandler handler) async {
+  Future<void> executeMultipleTasks(List<OTTask> tasks, OTTaskHandler handler,
+      bool offlineStorageEnabled) async {
     final List<ConnectivityResult> connectivityResult =
         await (Connectivity().checkConnectivity());
 
     if (connectivityResult.contains(ConnectivityResult.none)) {
       await databaseManager.saveTasksIntoDatabase(tasks,
           didFail: handler.didFail);
-    } else {
+    } else if (offlineStorageEnabled) {
       await _executeHTTPRequests(tasks, handler);
     }
   }

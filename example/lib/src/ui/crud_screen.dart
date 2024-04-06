@@ -17,7 +17,7 @@ class CRUDScreen extends StatelessWidget {
     final body = {'title': 'BMW Pencil'};
     final task = ExampleTask(url, HTTPMethod.post, headers, body);
 
-    processor.executeOneTask(task, ExampleTaskHandler());
+    processor.executeOneTask(task, ExampleTaskHandler(), true);
   }
 
   @override
