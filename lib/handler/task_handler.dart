@@ -9,7 +9,7 @@ abstract class DefaultOTTaskHandler {
   void didFail(OTTask task, Object? error, StackTrace stackTrace);
 }
 
-class OTTaskHandler extends DefaultOTTaskHandler {
+class OTTaskHandler implements DefaultOTTaskHandler {
   final _databaseProvider = OTDBProvider();
 
   @override
