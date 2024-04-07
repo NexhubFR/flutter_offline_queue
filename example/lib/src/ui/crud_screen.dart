@@ -19,7 +19,7 @@ class CRUDScreen extends StatelessWidget {
         {'Content-Type': 'application/json'},
         {'title': 'BMW Pencil'});
 
-    processor.executeOneTask(task, handler, true);
+    processor.executeOneTask(task, handler);
   }
 
   @override

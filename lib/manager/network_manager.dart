@@ -22,8 +22,8 @@ class OTNetworkManager {
           final tasks = await _databaseManager.getTasks();
 
           if (tasks.isNotEmpty) {
-            await OTTaskProcessor()
-                .executeMultipleTasks(tasks, _handler, false);
+            await OTTaskProcessor().executeMultipleTasks(tasks, _handler,
+                offlineStorageEnabled: false);
           }
         });
       }

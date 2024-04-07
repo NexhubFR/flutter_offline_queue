@@ -12,13 +12,17 @@ import 'package:http/http.dart' as http;
 class OTTaskProcessor {
   final OTDatabaseManager _databaseManager = OTDatabaseManager();
 
-  Future<void> executeOneTask(
-      OTTask task, OTTaskHandler handler, bool offlineStorageEnabled) async {
-    executeMultipleTasks([task], handler, offlineStorageEnabled);
+  Future<void> executeOneTask(OTTask task, OTTaskHandler handler,
+      {bool offlineStorageEnabled = true,
+      bool executeTasksOnNetworkAvailability = true}) async {
+    executeMultipleTasks([task], handler,
+        offlineStorageEnabled: offlineStorageEnabled,
+        executeTasksOnNetworkAvailability: executeTasksOnNetworkAvailability);
   }
 
   Future<void> executeMultipleTasks(List<OTTask> tasks, OTTaskHandler handler,
-      bool offlineStorageEnabled) async {
+      {bool offlineStorageEnabled = true,
+      bool executeTasksOnNetworkAvailability = true}) async {
     final List<ConnectivityResult> connectivityResult =
         await (Connectivity().checkConnectivity());
 
