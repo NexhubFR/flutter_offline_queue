@@ -30,7 +30,7 @@ class OTTaskProcessor {
         offlineStorageEnabled) {
       await _databaseManager.saveTasksIntoDatabase(tasks,
           didFail: handler.didFail);
-    } else {
+    } else if (executeTasksOnNetworkAvailability) {
       await _executeHTTPRequests(tasks, handler);
     }
   }
