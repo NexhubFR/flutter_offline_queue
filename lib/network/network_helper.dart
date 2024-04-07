@@ -36,6 +36,8 @@ class OTNetworkHelper {
   Future<void> execute(List<OTTask> tasks, OTTaskHandler handler) async {
     for (var task in tasks) {
       switch (task.method) {
+        case HTTPMethod.get:
+          await _get(task, handler);
         case HTTPMethod.post:
           await _post(task, handler);
         case HTTPMethod.patch:
@@ -46,6 +48,14 @@ class OTNetworkHelper {
 
       await handler.didFinish(task);
     }
+  }
+
+  Future<void> _get(OTTask task, OTTaskHandler handler) async {
+    await http
+        .get(task.uri, headers: task.headers)
+        .then((value) => handler.didSuccess(task, value.body))
+        .onError(
+            (error, stackTrace) => handler.didFail(task, error, stackTrace));
   }
 
   Future<void> _post(OTTask task, OTTaskHandler handler) async {
