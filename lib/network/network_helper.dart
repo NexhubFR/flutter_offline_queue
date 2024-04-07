@@ -10,10 +10,18 @@ import 'package:otter/model/task.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:http/http.dart' as http;
 
-class OTNetworkHelper {
+abstract class DefaultOTNetworkHelper {
+  Future<void> execute(List<OTTask> tasks, DefaultOTTaskHandler handler);
+  Future<void> get(OTTask task, OTTaskHandler handler);
+  Future<void> post(OTTask task, OTTaskHandler handler);
+  Future<void> patch(OTTask task, OTTaskHandler handler);
+  Future<void> put(OTTask task, OTTaskHandler handler);
+}
+
+class OTNetworkHelper implements DefaultOTNetworkHelper {
   final OTDBProvider _databaseProvider = OTDBProvider();
 
-  final OTTaskHandler _handler;
+  final DefaultOTTaskHandler _handler;
 
   OTNetworkHelper(this._handler);
 
@@ -33,24 +41,26 @@ class OTNetworkHelper {
     });
   }
 
-  Future<void> execute(List<OTTask> tasks, OTTaskHandler handler) async {
+  @override
+  Future<void> execute(List<OTTask> tasks, DefaultOTTaskHandler handler) async {
     for (var task in tasks) {
       switch (task.method) {
         case HTTPMethod.get:
-          await _get(task, handler);
+          await get(task, handler);
         case HTTPMethod.post:
-          await _post(task, handler);
+          await post(task, handler);
         case HTTPMethod.patch:
-          await _patch(task, handler);
+          await patch(task, handler);
         case HTTPMethod.put:
-          await _put(task, handler);
+          await put(task, handler);
       }
 
       await handler.didFinish(task);
     }
   }
 
-  Future<void> _get(OTTask task, OTTaskHandler handler) async {
+  @override
+  Future<void> get(OTTask task, DefaultOTTaskHandler handler) async {
     await http
         .get(task.uri, headers: task.headers)
         .then((value) => handler.didSuccess(task, value.body))
@@ -58,7 +68,8 @@ class OTNetworkHelper {
             (error, stackTrace) => handler.didFail(task, error, stackTrace));
   }
 
-  Future<void> _post(OTTask task, OTTaskHandler handler) async {
+  @override
+  Future<void> post(OTTask task, DefaultOTTaskHandler handler) async {
     await http
         .post(task.uri, headers: task.headers, body: jsonEncode(task.body))
         .then((value) => handler.didSuccess(task, value.body))
@@ -66,7 +77,8 @@ class OTNetworkHelper {
             (error, stackTrace) => handler.didFail(task, error, stackTrace));
   }
 
-  Future<void> _patch(OTTask task, OTTaskHandler handler) async {
+  @override
+  Future<void> patch(OTTask task, DefaultOTTaskHandler handler) async {
     await http
         .patch(task.uri, headers: task.headers, body: jsonEncode(task.body))
         .then((value) => handler.didSuccess(task, value.body))
@@ -74,7 +86,8 @@ class OTNetworkHelper {
             (error, stackTrace) => handler.didFail(task, error, stackTrace));
   }
 
-  Future<void> _put(OTTask task, OTTaskHandler handler) async {
+  @override
+  Future<void> put(OTTask task, DefaultOTTaskHandler handler) async {
     await http
         .put(task.uri, headers: task.headers, body: jsonEncode(task.body))
         .then((value) => handler.didSuccess(task, value.body))

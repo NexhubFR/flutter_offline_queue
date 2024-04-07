@@ -3,13 +3,13 @@ library otter;
 import 'package:otter/database/database_provider.dart';
 import 'package:otter/model/task.dart';
 
-abstract class _DefaultOTTaskHandler {
+abstract class DefaultOTTaskHandler {
   Future<void> didFinish(OTTask task);
   void didSuccess(OTTask task, String response);
   void didFail(OTTask task, Object? error, StackTrace stackTrace);
 }
 
-class OTTaskHandler extends _DefaultOTTaskHandler {
+class OTTaskHandler extends DefaultOTTaskHandler {
   final _databaseProvider = OTDBProvider();
 
   @override
