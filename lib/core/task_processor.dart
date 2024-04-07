@@ -10,7 +10,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:http/http.dart' as http;
 
 class OTTaskProcessor {
-  final OTDatabaseManager databaseManager = OTDatabaseManager();
+  final OTDatabaseManager _databaseManager = OTDatabaseManager();
 
   Future<void> executeOneTask(
       OTTask task, OTTaskHandler handler, bool offlineStorageEnabled) async {
@@ -22,10 +22,11 @@ class OTTaskProcessor {
     final List<ConnectivityResult> connectivityResult =
         await (Connectivity().checkConnectivity());
 
-    if (connectivityResult.contains(ConnectivityResult.none)) {
-      await databaseManager.saveTasksIntoDatabase(tasks,
+    if (connectivityResult.contains(ConnectivityResult.none) &&
+        offlineStorageEnabled) {
+      await _databaseManager.saveTasksIntoDatabase(tasks,
           didFail: handler.didFail);
-    } else if (offlineStorageEnabled) {
+    } else {
       await _executeHTTPRequests(tasks, handler);
     }
   }

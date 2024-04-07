@@ -7,11 +7,11 @@ import 'package:otter/core/task_processor.dart';
 import 'package:synchronized/synchronized.dart';
 
 class OTNetworkManager {
-  final OTDatabaseManager databaseManager = OTDatabaseManager();
+  final OTDatabaseManager _databaseManager = OTDatabaseManager();
 
-  late OTTaskHandler handler;
+  final OTTaskHandler _handler;
 
-  OTNetworkManager(this.handler);
+  OTNetworkManager(this._handler);
 
   Future<void> observe() async {
     var lock = Lock(reentrant: true);
@@ -19,10 +19,11 @@ class OTNetworkManager {
     Connectivity().onConnectivityChanged.listen((event) async {
       if (event.first != ConnectivityResult.none) {
         await lock.synchronized(() async {
-          final tasks = await databaseManager.getTasks();
+          final tasks = await _databaseManager.getTasks();
 
           if (tasks.isNotEmpty) {
-            await OTTaskProcessor().executeMultipleTasks(tasks, handler, false);
+            await OTTaskProcessor()
+                .executeMultipleTasks(tasks, _handler, false);
           }
         });
       }
