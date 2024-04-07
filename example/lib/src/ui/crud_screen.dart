@@ -1,17 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'package:example/src/otter/example_task.dart';
-import 'package:example/src/otter/example_task_handler.dart';
 
-import 'package:otter/enum/http_method.dart';
-import 'package:otter/core/task_processor.dart';
+import 'package:otter/network/http_method.dart';
+import 'package:otter/database/database_store.dart';
 
 class CRUDScreen extends StatelessWidget {
   const CRUDScreen({super.key});
 
   void post() {
-    final processor = OTTaskProcessor();
-    final handler = ExampleTaskHandler();
+    final store = OTDBStore();
 
     final task = ExampleTask(
         Uri.https('dummyjson.com', '/products/add'),
@@ -19,7 +19,11 @@ class CRUDScreen extends StatelessWidget {
         {'Content-Type': 'application/json'},
         {'title': 'BMW Pencil'});
 
-    processor.executeOneTask(task, handler);
+    store.addOneTask(
+      task,
+      didFail: (task, error, stackTrace) => {log('$task, $error, $stackTrace')},
+      networkAvailable: () => {log('Network is available')},
+    );
   }
 
   @override

@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:otter/core/task_handler.dart';
+import 'package:otter/handler/task_handler.dart';
 import 'package:otter/model/task.dart';
 
 class ExampleTaskHandler extends OTTaskHandler {

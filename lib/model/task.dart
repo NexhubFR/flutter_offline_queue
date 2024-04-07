@@ -2,8 +2,9 @@ library otter;
 
 import 'dart:convert';
 
-import 'package:otter/enum/http_method.dart';
 import 'package:uuid/uuid.dart';
+
+import 'package:otter/network/http_method.dart';
 
 class OTTask {
   late String uuid;

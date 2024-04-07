@@ -1,6 +1,6 @@
 library otter;
 
-import 'package:otter/manager/database_manager.dart';
+import 'package:otter/database/database_provider.dart';
 import 'package:otter/model/task.dart';
 
 abstract class _DefaultOTTaskHandler {
@@ -10,7 +10,7 @@ abstract class _DefaultOTTaskHandler {
 }
 
 class OTTaskHandler extends _DefaultOTTaskHandler {
-  final _databaseManager = OTDatabaseManager();
+  final _databaseManager = OTDBProvider();
 
   @override
   void didFail(OTTask task, Object? error, StackTrace stackTrace) {}

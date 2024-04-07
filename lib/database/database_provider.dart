@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:otter/model/task.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 
-class OTDatabaseManager {
+import 'package:otter/model/task.dart';
+
+class OTDBProvider {
   static late Database _database;
 
   final _store = intMapStoreFactory.store();

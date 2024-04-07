@@ -2,41 +2,38 @@ library otter;
 
 import 'dart:convert';
 
-import 'package:otter/core/task_handler.dart';
-import 'package:otter/model/task.dart';
-import 'package:otter/manager/database_manager.dart';
-import 'package:otter/enum/http_method.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:otter/handler/task_handler.dart';
+import 'package:otter/network/http_method.dart';
+import 'package:otter/database/database_provider.dart';
+import 'package:otter/model/task.dart';
+import 'package:synchronized/synchronized.dart';
 import 'package:http/http.dart' as http;
 
-class OTTaskProcessor {
-  final OTDatabaseManager _databaseManager = OTDatabaseManager();
+class OTNetworkHelper {
+  final OTDBProvider _databaseManager = OTDBProvider();
 
-  Future<void> executeOneTask(OTTask task, OTTaskHandler handler,
-      {bool offlineStorageEnabled = true,
-      bool executeTasksOnNetworkAvailability = true}) async {
-    executeMultipleTasks([task], handler,
-        offlineStorageEnabled: offlineStorageEnabled,
-        executeTasksOnNetworkAvailability: executeTasksOnNetworkAvailability);
+  final OTTaskHandler _handler;
+
+  OTNetworkHelper(this._handler);
+
+  Future<void> observe() async {
+    var lock = Lock(reentrant: true);
+
+    Connectivity().onConnectivityChanged.listen((event) async {
+      if (event.first != ConnectivityResult.none) {
+        await lock.synchronized(() async {
+          final tasks = await _databaseManager.getTasks();
+
+          if (tasks.isNotEmpty) {
+            await execute(tasks, _handler);
+          }
+        });
+      }
+    });
   }
 
-  Future<void> executeMultipleTasks(List<OTTask> tasks, OTTaskHandler handler,
-      {bool offlineStorageEnabled = true,
-      bool executeTasksOnNetworkAvailability = true}) async {
-    final List<ConnectivityResult> connectivityResult =
-        await (Connectivity().checkConnectivity());
-
-    if (connectivityResult.contains(ConnectivityResult.none) &&
-        offlineStorageEnabled) {
-      await _databaseManager.saveTasksIntoDatabase(tasks,
-          didFail: handler.didFail);
-    } else if (executeTasksOnNetworkAvailability) {
-      await _executeHTTPRequests(tasks, handler);
-    }
-  }
-
-  Future<void> _executeHTTPRequests(
-      List<OTTask> tasks, OTTaskHandler handler) async {
+  Future<void> execute(List<OTTask> tasks, OTTaskHandler handler) async {
     for (var task in tasks) {
       switch (task.method) {
         case HTTPMethod.post:
