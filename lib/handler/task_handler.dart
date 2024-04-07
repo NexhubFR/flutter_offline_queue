@@ -10,14 +10,14 @@ abstract class _DefaultOTTaskHandler {
 }
 
 class OTTaskHandler extends _DefaultOTTaskHandler {
-  final _databaseManager = OTDBProvider();
+  final _databaseProvider = OTDBProvider();
 
   @override
   void didFail(OTTask task, Object? error, StackTrace stackTrace) {}
 
   @override
   Future<void> didFinish(OTTask task) async {
-    await _databaseManager.erase(task.uuid);
+    await _databaseProvider.erase(task.uuid);
   }
 
   @override

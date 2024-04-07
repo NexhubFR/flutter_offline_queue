@@ -11,7 +11,7 @@ import 'package:synchronized/synchronized.dart';
 import 'package:http/http.dart' as http;
 
 class OTNetworkHelper {
-  final OTDBProvider _databaseManager = OTDBProvider();
+  final OTDBProvider _databaseProvider = OTDBProvider();
 
   final OTTaskHandler _handler;
 
@@ -23,7 +23,7 @@ class OTNetworkHelper {
     Connectivity().onConnectivityChanged.listen((event) async {
       if (event.first != ConnectivityResult.none) {
         await lock.synchronized(() async {
-          final tasks = await _databaseManager.getTasks();
+          final tasks = await _databaseProvider.getTasks();
 
           if (tasks.isNotEmpty) {
             await execute(tasks, _handler);
