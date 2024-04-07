@@ -4,19 +4,19 @@ import 'package:otter/network/http_method.dart';
 void main() {
   group('HTTPMethod Tests', () {
     test('fromString get', () {
-      expect(HTTPMethodExtension.fromString('get') == HTTPMethod.get, true);
+      expect(HTTPMethodExtension.fromString('get'), HTTPMethod.get);
     });
 
     test('fromString post', () {
-      expect(HTTPMethodExtension.fromString('post') == HTTPMethod.post, true);
+      expect(HTTPMethodExtension.fromString('post'), HTTPMethod.post);
     });
 
     test('fromString patch', () {
-      expect(HTTPMethodExtension.fromString('patch') == HTTPMethod.patch, true);
+      expect(HTTPMethodExtension.fromString('patch'), HTTPMethod.patch);
     });
 
     test('fromString put', () {
-      expect(HTTPMethodExtension.fromString('put') == HTTPMethod.put, true);
+      expect(HTTPMethodExtension.fromString('put'), HTTPMethod.put);
     });
   });
 }
