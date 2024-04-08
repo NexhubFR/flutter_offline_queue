@@ -16,6 +16,7 @@ abstract class DefaultOTNetworkHelper {
   Future<void> post(OTTask task, OTTaskHandler handler);
   Future<void> patch(OTTask task, OTTaskHandler handler);
   Future<void> put(OTTask task, OTTaskHandler handler);
+  Future<void> delete(OTTask task, OTTaskHandler handler);
 }
 
 class OTNetworkHelper implements DefaultOTNetworkHelper {
@@ -53,6 +54,8 @@ class OTNetworkHelper implements DefaultOTNetworkHelper {
           await patch(task, handler);
         case HTTPMethod.put:
           await put(task, handler);
+        case HTTPMethod.delete:
+          await delete(task, handler);
       }
 
       await handler.didFinish(task);
@@ -90,6 +93,15 @@ class OTNetworkHelper implements DefaultOTNetworkHelper {
   Future<void> put(OTTask task, DefaultOTTaskHandler handler) async {
     await http
         .put(task.uri, headers: task.headers, body: jsonEncode(task.body))
+        .then((value) => handler.didSuccess(task, value.body))
+        .onError(
+            (error, stackTrace) => handler.didFail(task, error, stackTrace));
+  }
+
+  @override
+  Future<void> delete(OTTask task, DefaultOTTaskHandler handler) async {
+    await http
+        .delete(task.uri, headers: task.headers)
         .then((value) => handler.didSuccess(task, value.body))
         .onError(
             (error, stackTrace) => handler.didFail(task, error, stackTrace));

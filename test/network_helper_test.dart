@@ -65,6 +65,16 @@ void requestsAreSuccessful() {
               expect(didSuccessIsExecuted, true),
               expect(didFinishIsExecuted, true),
             });
+
+    test(
+        'Successful OTNetworkHelper delete',
+        () async => {
+              await successStubOTNetworkHelper.execute(
+                  [OTTask(Uri.https('google.com'), HTTPMethod.delete, {}, {})],
+                  mockOTTaskHandler),
+              expect(didSuccessIsExecuted, true),
+              expect(didFinishIsExecuted, true),
+            });
   });
 }
 
@@ -124,6 +134,16 @@ void requestsAreUnsuccessful() {
               expect(didFailIsExecuted, true),
               expect(didFinishIsExecuted, true)
             });
+
+    test(
+        'Unsuccessful OTNetworkHelper delete',
+        () async => {
+              await failStubOTNetworkHelper.execute(
+                  [OTTask(Uri.https('google.com'), HTTPMethod.delete, {}, {})],
+                  mockOTTaskHandler),
+              expect(didFailIsExecuted, true),
+              expect(didFinishIsExecuted, true)
+            });
   });
 }
 
@@ -150,6 +170,11 @@ class SuccessStubOTNetworkHelper extends OTNetworkHelper
   Future<void> put(OTTask task, DefaultOTTaskHandler handler) async {
     handler.didSuccess(task, 'put');
   }
+
+  @override
+  Future<void> delete(OTTask task, DefaultOTTaskHandler handler) async {
+    handler.didSuccess(task, 'delete');
+  }
 }
 
 class FailStubOTNetworkHelper extends OTNetworkHelper
@@ -175,6 +200,11 @@ class FailStubOTNetworkHelper extends OTNetworkHelper
   Future<void> put(OTTask task, DefaultOTTaskHandler handler) async {
     handler.didFail(task, MockError('Put error'), MockStackTrace());
   }
+
+  @override
+  Future<void> delete(OTTask task, DefaultOTTaskHandler handler) async {
+    handler.didFail(task, MockError('Delete error'), MockStackTrace());
+  }
 }
 
 class MockOTTaskHandler implements DefaultOTTaskHandler {
@@ -198,6 +228,8 @@ class MockOTTaskHandler implements DefaultOTTaskHandler {
         expect((error as MockError).description, 'Post error');
       case HTTPMethod.put:
         expect((error as MockError).description, 'Put error');
+      case HTTPMethod.delete:
+        expect((error as MockError).description, 'Delete error');
     }
 
     if (didFailCallback != null) didFailCallback!();
@@ -219,6 +251,8 @@ class MockOTTaskHandler implements DefaultOTTaskHandler {
         expect(response, 'post');
       case HTTPMethod.put:
         expect(response, 'put');
+      case HTTPMethod.delete:
+        expect(response, 'delete');
     }
 
     if (didSucccesCallback != null) didSucccesCallback!();

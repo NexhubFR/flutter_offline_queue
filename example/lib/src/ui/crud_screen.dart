@@ -53,6 +53,12 @@ class CRUDScreen extends StatelessWidget {
         {'title': 'PUT'}));
   }
 
+  void delete() {
+    storeTask(ExampleTask(
+        Uri.https(dotenv.env['BASE_URL']!, dotenv.env['DELETE_PATH']!),
+        HTTPMethod.delete, {}, {}));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +78,7 @@ class CRUDScreen extends StatelessWidget {
             button(context, 'POST', () => post()),
             button(context, 'PATCH', () => patch()),
             button(context, 'PUT', () => put()),
+            button(context, 'DELETE', () => delete())
           ]),
     );
   }

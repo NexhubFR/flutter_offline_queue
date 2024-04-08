@@ -1,6 +1,6 @@
 library otter;
 
-enum HTTPMethod { get, post, patch, put }
+enum HTTPMethod { get, post, patch, put, delete }
 
 extension HTTPMethodExtension on HTTPMethod {
   static HTTPMethod? fromString(String from) {
@@ -13,6 +13,8 @@ extension HTTPMethodExtension on HTTPMethod {
         return HTTPMethod.patch;
       case 'put':
         return HTTPMethod.put;
+      case 'delete':
+        return HTTPMethod.delete;
       default:
         Exception('HTTP method not recognized.');
         return null;
