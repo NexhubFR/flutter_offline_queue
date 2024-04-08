@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:example/src/otter/example_task.dart';
 
@@ -10,6 +9,10 @@ import 'package:otter/database/database_store.dart';
 
 class CRUDScreen extends StatelessWidget {
   final store = OTDBStore();
+
+  final baseUrl = 'dummyjson.com';
+  final pathToOneProduct = '/products/1';
+  final pathToAddProduct = '/products/add';
 
   CRUDScreen({super.key});
 
@@ -23,38 +26,30 @@ class CRUDScreen extends StatelessWidget {
 
   void get() {
     storeTask(ExampleTask(
-        Uri.https(dotenv.env['BASE_URL']!, dotenv.env['GET_PATH']!),
-        HTTPMethod.get, {}, {}));
+        Uri.https(baseUrl, pathToOneProduct), HTTPMethod.get, {}, {}));
   }
 
   void post() {
-    storeTask(ExampleTask(
-        Uri.https(dotenv.env['BASE_URL']!, dotenv.env['POST_PATH']!),
-        HTTPMethod.post,
-        {'Content-Type': 'application/json'},
-        {'title': 'POST'}));
+    storeTask(ExampleTask(Uri.https(baseUrl, pathToAddProduct), HTTPMethod.post,
+        {'Content-Type': 'application/json'}, {'title': 'POST'}));
   }
 
   void patch() {
     storeTask(ExampleTask(
-        Uri.https(dotenv.env['BASE_URL']!, dotenv.env['PATCH_PATH']!),
+        Uri.https(baseUrl, pathToOneProduct),
         HTTPMethod.patch,
         {'Content-Type': 'application/json'},
         {'title': 'PATCH'}));
   }
 
   void put() {
-    storeTask(ExampleTask(
-        Uri.https(dotenv.env['BASE_URL']!, dotenv.env['PUT_PATH']!),
-        HTTPMethod.put,
-        {'Content-Type': 'application/json'},
-        {'title': 'PUT'}));
+    storeTask(ExampleTask(Uri.https(baseUrl, pathToOneProduct), HTTPMethod.put,
+        {'Content-Type': 'application/json'}, {'title': 'PUT'}));
   }
 
   void delete() {
     storeTask(ExampleTask(
-        Uri.https(dotenv.env['BASE_URL']!, dotenv.env['DELETE_PATH']!),
-        HTTPMethod.delete, {}, {}));
+        Uri.https(baseUrl, pathToOneProduct), HTTPMethod.delete, {}, {}));
   }
 
   @override
