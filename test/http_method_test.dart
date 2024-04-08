@@ -18,5 +18,9 @@ void main() {
     test('fromString put', () {
       expect(HTTPMethodExtension.fromString('put'), HTTPMethod.put);
     });
+
+    test('fromString delete', () {
+      expect(HTTPMethodExtension.fromString('delete'), HTTPMethod.delete);
+    });
   });
 }
