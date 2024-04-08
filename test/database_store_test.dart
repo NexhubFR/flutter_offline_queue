@@ -52,6 +52,14 @@ class MockDatabaseProvider implements DefaultOTDBProvider {
   Future<void> saveTasksIntoDatabase(List<OTTask> tasks,
       {required Function(OTTask task, Object? error, StackTrace stackTrace)
           didFail}) async {}
+
+  @override
+  Future<void> eraseTask(String uuid) async {}
+
+  @override
+  Future<List<OTTask>> getTasks() async {
+    return [];
+  }
 }
 
 class MockConnectivity implements Connectivity {

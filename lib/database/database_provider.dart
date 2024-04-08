@@ -12,6 +12,8 @@ abstract class DefaultOTDBProvider {
   Future<void> saveTasksIntoDatabase(List<OTTask> tasks,
       {required Function(OTTask task, Object? error, StackTrace stackTrace)
           didFail});
+  Future<List<OTTask>> getTasks();
+  Future<void> eraseTask(String uuid);
 }
 
 class OTDBProvider implements DefaultOTDBProvider {
@@ -22,7 +24,7 @@ class OTDBProvider implements DefaultOTDBProvider {
   Future<void> init() async {
     final dir = await getApplicationDocumentsDirectory();
     await dir.create(recursive: true);
-    final dbPath = join(dir.path, 'OT.db');
+    final dbPath = join(dir.path, 'otter.db');
     _database = await databaseFactoryIo.openDatabase(dbPath);
   }
 
@@ -45,6 +47,7 @@ class OTDBProvider implements DefaultOTDBProvider {
     }
   }
 
+  @override
   Future<List<OTTask>> getTasks() async {
     final records = await _store.find(_database);
     final tasks =
@@ -52,7 +55,8 @@ class OTDBProvider implements DefaultOTDBProvider {
     return tasks;
   }
 
-  Future<void> erase(String uuid) async {
+  @override
+  Future<void> eraseTask(String uuid) async {
     await _store.delete(_database,
         finder: Finder(filter: Filter.equals('uuid', uuid)));
   }

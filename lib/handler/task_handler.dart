@@ -17,7 +17,7 @@ class OTTaskHandler implements DefaultOTTaskHandler {
 
   @override
   Future<void> didFinish(OTTask task) async {
-    await _databaseProvider.erase(task.uuid);
+    await _databaseProvider.eraseTask(task.uuid);
   }
 
   @override
