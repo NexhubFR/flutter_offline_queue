@@ -24,9 +24,7 @@ class CRUDScreen extends StatelessWidget {
   void get() {
     storeTask(ExampleTask(
         Uri.https(dotenv.env['BASE_URL']!, dotenv.env['GET_PATH']!),
-        HTTPMethod.get,
-        {'Content-Type': 'application/json'},
-        {}));
+        HTTPMethod.get, {}, {}));
   }
 
   void post() {

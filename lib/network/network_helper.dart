@@ -65,7 +65,7 @@ class OTNetworkHelper implements DefaultOTNetworkHelper {
   @override
   Future<void> get(OTTask task, DefaultOTTaskHandler handler) async {
     await http
-        .get(task.uri, headers: task.headers)
+        .get(task.uri)
         .then((value) => handler.didSuccess(task, value.body))
         .onError(
             (error, stackTrace) => handler.didFail(task, error, stackTrace));
@@ -101,7 +101,7 @@ class OTNetworkHelper implements DefaultOTNetworkHelper {
   @override
   Future<void> delete(OTTask task, DefaultOTTaskHandler handler) async {
     await http
-        .delete(task.uri, headers: task.headers)
+        .delete(task.uri)
         .then((value) => handler.didSuccess(task, value.body))
         .onError(
             (error, stackTrace) => handler.didFail(task, error, stackTrace));
