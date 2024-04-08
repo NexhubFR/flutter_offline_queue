@@ -56,27 +56,40 @@ class CRUDScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFDBB8ED).withOpacity(0.2),
       body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            button('GET', () => get()),
-            button('POST', () => post()),
-            button('PATCH', () => patch()),
-            button('PUT', () => put()),
+            const Text(
+              'Otter 🦦',
+              style: TextStyle(
+                  color: Color(0xFFDBB8ED),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 50),
+            ),
+            button(context, 'GET', () => get()),
+            button(context, 'POST', () => post()),
+            button(context, 'PATCH', () => patch()),
+            button(context, 'PUT', () => put()),
           ]),
     );
   }
 
-  Widget button(String text, void Function() onPressed) {
+  Widget button(BuildContext context, String text, void Function() onPressed) {
     return Center(
-        child: TextButton(
-      style: ButtonStyle(
-        foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-      ),
-      onPressed: onPressed,
-      child: Text(text),
-    ));
+        child: Container(
+            width: 300,
+            height: 50,
+            margin: const EdgeInsets.all(10),
+            child: TextButton(
+              style: ButtonStyle(
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(const Color(0xFFDBB8ED)),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      const Color(0xFFDBB8ED).withOpacity(0.3))),
+              onPressed: onPressed,
+              child: Text(text),
+            )));
   }
 }
