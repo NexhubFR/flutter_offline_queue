@@ -8,7 +8,13 @@ import 'package:sembast/sembast_io.dart';
 
 import 'package:otter/model/task.dart';
 
-class OTDBProvider {
+abstract class DefaultOTDBProvider {
+  Future<void> saveTasksIntoDatabase(List<OTTask> tasks,
+      {required Function(OTTask task, Object? error, StackTrace stackTrace)
+          didFail});
+}
+
+class OTDBProvider implements DefaultOTDBProvider {
   static late Database _database;
 
   final _store = intMapStoreFactory.store();
@@ -20,6 +26,7 @@ class OTDBProvider {
     _database = await databaseFactoryIo.openDatabase(dbPath);
   }
 
+  @override
   Future<void> saveTasksIntoDatabase(List<OTTask> tasks,
       {required Function(OTTask task, Object? error, StackTrace stackTrace)
           didFail}) async {
