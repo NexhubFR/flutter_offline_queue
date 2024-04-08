@@ -2,7 +2,7 @@
 
 <img src="./resources/banner.jpg">
 
-> Flutter plugin designed to simplify the management of HTTP requests in offline and online modes. 
+> Flutter plugin designed to simplify the management of HTTP requests in offline mode. 
 
 ---
 
