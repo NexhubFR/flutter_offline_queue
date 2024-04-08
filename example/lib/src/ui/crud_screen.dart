@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:example/src/otter/example_task.dart';
 
@@ -12,57 +13,44 @@ class CRUDScreen extends StatelessWidget {
 
   CRUDScreen({super.key});
 
-  void get() {
-    final task = ExampleTask(Uri.https('dummyjson.com', '/products/1'),
-        HTTPMethod.get, {'Content-Type': 'application/json'}, {});
-
+  void storeTask(ExampleTask task) {
     store.addOneTask(
       task,
       didFail: (task, error, stackTrace) => {log('$task, $error, $stackTrace')},
       networkAvailable: () => {log('Network is available')},
     );
+  }
+
+  void get() {
+    storeTask(ExampleTask(
+        Uri.https(dotenv.env['BASE_URL']!, dotenv.env['GET_PATH']!),
+        HTTPMethod.get,
+        {'Content-Type': 'application/json'},
+        {}));
   }
 
   void post() {
-    final task = ExampleTask(
-        Uri.https('dummyjson.com', '/products/add'),
+    storeTask(ExampleTask(
+        Uri.https(dotenv.env['BASE_URL']!, dotenv.env['POST_PATH']!),
         HTTPMethod.post,
         {'Content-Type': 'application/json'},
-        {'title': 'BMW Pencil'});
-
-    store.addOneTask(
-      task,
-      didFail: (task, error, stackTrace) => {log('$task, $error, $stackTrace')},
-      networkAvailable: () => {log('Network is available')},
-    );
+        {'title': 'POST'}));
   }
 
   void patch() {
-    final task = ExampleTask(
-        Uri.https('dummyjson.com', '/products/1'),
+    storeTask(ExampleTask(
+        Uri.https(dotenv.env['BASE_URL']!, dotenv.env['PATCH_PATH']!),
         HTTPMethod.patch,
         {'Content-Type': 'application/json'},
-        {'title': 'iPhone Galaxy +1'});
-
-    store.addOneTask(
-      task,
-      didFail: (task, error, stackTrace) => {log('$task, $error, $stackTrace')},
-      networkAvailable: () => {log('Network is available')},
-    );
+        {'title': 'PATCH'}));
   }
 
   void put() {
-    final task = ExampleTask(
-        Uri.https('dummyjson.com', '/products/1'),
+    storeTask(ExampleTask(
+        Uri.https(dotenv.env['BASE_URL']!, dotenv.env['PUT_PATH']!),
         HTTPMethod.put,
         {'Content-Type': 'application/json'},
-        {'title': 'iPhone Galaxy +1'});
-
-    store.addOneTask(
-      task,
-      didFail: (task, error, stackTrace) => {log('$task, $error, $stackTrace')},
-      networkAvailable: () => {log('Network is available')},
-    );
+        {'title': 'PUT'}));
   }
 
   @override
