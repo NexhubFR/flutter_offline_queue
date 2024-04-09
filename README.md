@@ -18,7 +18,7 @@ dependencies:
 
 > Here's a simple configuration. 
 
-*⚠️ Note that you can create your own OTTaskHandler and pass it as a parameter to the init() function. [Example](#custom-OTTaskHandler)*
+*⚠️ Note that you can create your own OTTaskHandler and pass it as a parameter to the init() function. [Example](#custom-ottaskhandler)*
 
 ```dart
 import 'package:otter/handler/task_handler.dart';
@@ -33,7 +33,7 @@ void main() async {
 
 ## Using
 
-*⚠️ Note that you can create your own OTTask and pass it as a parameter to the addOneTask() or addMultipleTasks() functions. [Example](#custom-OTTask)*
+*⚠️ Note that you can create your own OTTask and pass it as a parameter to the addOneTask() or addMultipleTasks() functions. [Example](#custom-ottask)*
 
 ### addOneTask
 
