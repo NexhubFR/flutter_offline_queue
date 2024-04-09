@@ -1,6 +1,6 @@
-# <img src="./resources/icon.jpg" width="30"> Otter
+# <img src="https://raw.githubusercontent.com/NexhubFR/otter/v1.0.0/resources/icon.jpg" width="30"> Otter
 
-<img src="./resources/banner.jpg">
+<img src="https://raw.githubusercontent.com/NexhubFR/otter/v1.0.0/resources/banner.jpg">
 
 > Flutter plugin designed to simplify the management of HTTP requests in offline mode :
 > - Cache HTTP requests in the event of network unavailability.
