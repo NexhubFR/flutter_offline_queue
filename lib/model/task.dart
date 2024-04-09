@@ -20,6 +20,17 @@ class OTTask {
     type = runtimeType.toString();
   }
 
+  /// Constructs an `OTTask` object from a database record.
+  ///
+  /// Extracts and converts database values to create an `OTTask` object, handling URI parsing,
+  /// method conversion, and JSON decoding for headers and body.
+  ///
+  /// Parameters:
+  /// - `data`: A map containing the task's data, typically retrieved from a database.
+  ///
+  /// Returns:
+  /// An instance of `OTTask` reconstructed from the provided map.
+  ///
   static OTTask fromDatabase(Map<String, Object?> data) {
     final values = data.values.toList();
 
