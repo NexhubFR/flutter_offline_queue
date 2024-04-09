@@ -3,6 +3,17 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 
+## [1.0.2] - 2024-04-09
+
+### Fixed
+
+- Fixed example links in README.md
+
+### Changed
+
+- Updated documentation for dart doc execution
+- Updated /example/lib/main.dart file to include a comprehensive example
+
 ## [1.0.1] - 2024-04-09
 
 ### Changed
