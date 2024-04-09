@@ -1,5 +1,3 @@
-library otter;
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 import 'package:otter/model/task.dart';

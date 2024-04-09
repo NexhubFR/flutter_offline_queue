@@ -1,5 +1,3 @@
-library otter;
-
 enum HTTPMethod { get, post, patch, put, delete }
 
 extension HTTPMethodExtension on HTTPMethod {

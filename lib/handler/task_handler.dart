@@ -1,5 +1,3 @@
-library otter;
-
 import 'package:otter/database/database_provider.dart';
 import 'package:otter/model/task.dart';
 
