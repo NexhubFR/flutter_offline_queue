@@ -178,6 +178,9 @@ store.addMultipleTasks(
 
 ### Custom OTTaskHandler
 
+> TaskHandler is an important concept in Otter. 
+> It is in this class that the post-processing of HTTP requests is managed.
+
 ```dart
 import 'package:otter/handler/task_handler.dart';
 import 'package:otter/model/task.dart';
@@ -185,18 +188,18 @@ import 'package:otter/model/task.dart';
 class ExampleTaskHandler extends OTTaskHandler {
   @override
   void didFail(OTTask task, Object? error, StackTrace stackTrace) {
-    // Handles task failure
+    // Handle task failure
   }
 
   @override
   Future<void> didFinish(OTTask task) async {
     await super.didFinish(task);
-    // Completes processing of a given task
+    // Complete processing of a given task
   }
 
   @override
   void didSuccess(OTTask task, String response) {
-    // Handles the successful completion of a task
+    // Handle the successful completion of a task
   }
 }
 ```
