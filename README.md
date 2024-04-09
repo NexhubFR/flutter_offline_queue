@@ -206,6 +206,8 @@ class ExampleTaskHandler extends OTTaskHandler {
 
 ### Custom OTTask
 
+> Task is a representation of HTTP request
+
 ```dart
 import 'package:otter/model/task.dart';
 
