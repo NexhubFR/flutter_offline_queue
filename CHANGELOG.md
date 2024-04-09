@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 
+## [1.0.1] - 2024-04-09
+
+### Changed
+
+- Insecure link in CHANGELOG.md
+- Use url for images in README.md
+
 ## [1.0.0] - 2024-04-09
 
 ### Added
