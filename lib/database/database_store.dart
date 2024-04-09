@@ -16,6 +16,7 @@ abstract class DefaultOTDBStore {
       required Function() networkAvailable});
 }
 
+/// `OTDBStore` Caches HTTP requests in the event of network unavailability
 class OTDBStore implements DefaultOTDBStore {
   DefaultOTDBProvider _databaseProvider = OTDBProvider();
   Connectivity _connectivity = Connectivity();

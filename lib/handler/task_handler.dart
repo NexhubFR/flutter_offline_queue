@@ -9,6 +9,7 @@ abstract class DefaultOTTaskHandler {
   void didFail(OTTask task, Object? error, StackTrace stackTrace);
 }
 
+/// `OTTaskHandler` Handles post-processing task
 class OTTaskHandler implements DefaultOTTaskHandler {
   final _databaseProvider = OTDBProvider();
 

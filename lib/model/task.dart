@@ -6,6 +6,7 @@ import 'package:uuid/uuid.dart';
 
 import 'package:otter/network/http_method.dart';
 
+/// `OTTask` Representation of HTTP request
 class OTTask {
   late String uuid;
   late String type;
