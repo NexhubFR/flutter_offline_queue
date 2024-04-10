@@ -35,7 +35,7 @@ class OTNetworkHelper implements DefaultOTNetworkHelper {
   ///
   /// This method ensures tasks are only executed when network connectivity is available,
   /// preventing unnecessary processing attempts during offline periods.
-  Future<void> observe() async {
+  void observe() {
     var lock = Lock(reentrant: true);
 
     Connectivity().onConnectivityChanged.listen((event) async {

@@ -43,7 +43,7 @@ class OTDBStore implements DefaultOTDBStore {
       {required Function(OTTask task, Object? error, StackTrace stackTrace)
           didFail,
       required Function() networkAvailable}) async {
-    addMultipleTasks([task],
+    await addMultipleTasks([task],
         didFail: didFail, networkAvailable: networkAvailable);
   }
 

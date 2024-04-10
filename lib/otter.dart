@@ -5,6 +5,6 @@ import 'package:otter/network/network_helper.dart';
 class Otter {
   static Future<void> init(OTTaskHandler handler) async {
     await OTDBProvider().init();
-    await OTNetworkHelper(handler).observe();
+    OTNetworkHelper(handler).observe();
   }
 }
