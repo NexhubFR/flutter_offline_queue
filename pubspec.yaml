@@ -1,6 +1,6 @@
 name: otter
 description: "Flutter plugin designed to simplify the management of HTTP requests in offline and online modes."
-version: 1.0.2
+version: 1.0.3
 homepage: https://nexhub.fr/
 repository: https://github.com/NexhubFR/otter
 

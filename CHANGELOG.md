@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 
+## [1.0.3] - 2024-04-10
+
+### Changed
+
+- Improve using async/await for OTNetworkHelper & OTDBStore
+
 ## [1.0.2] - 2024-04-09
 
 ### Fixed

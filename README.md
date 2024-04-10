@@ -11,7 +11,7 @@
 
 ```yml
 dependencies:
-    otter: ^1.0.2
+    otter: ^1.0.3
 ```
 
 ## Configuration
