@@ -1,5 +1,7 @@
 # <img src="https://raw.githubusercontent.com/NexhubFR/otter/v1.0.0/resources/icon.jpg" width="30"> Otter
 
+#### 🚨 This project is no longer maintained. Its sole purpose was to explore and test the creation and development of a Flutter package.
+
 <img src="https://raw.githubusercontent.com/NexhubFR/otter/v1.0.0/resources/banner.jpg">
 
 > Flutter plugin designed to simplify the management of HTTP requests in offline mode :
