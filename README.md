@@ -217,7 +217,3 @@ class ExampleTask extends OTTask {
   ExampleTask(super.uri, super.method, super.headers, super.body);
 }
 ```
-
----
-
-> support@nexhub.fr
